@@ -1,0 +1,46 @@
+import token from '../services/token';
+
+export default {
+    verifyEcommerce: async(req, res, next) => {
+        if (!req.headers.token) {
+            res.status(401).send({
+                message: 'NO SE ENVIÓ EL TOKEN'
+            });
+        }
+        const response = await token.decode(req.headers.token);
+        if (response) {
+            if (response.rol == "cliente" || response.rol == "admin") {
+                next();
+            } else {
+                res.status(401).send({
+                    message: 'NO ESTÁ PERMITIDO VISITAR ESTA RUTA'
+                });
+            }
+        } else {
+            res.status(401).send({
+                message: 'EL TOKEN NO ES VALIDO'
+            });
+        }
+    },
+    verifyAdmin: async(req, res, next) => {
+        if (!req.headers.token) {
+            res.status(401).send({
+                message: 'NO SE ENVIÓ EL TOKEN'
+            });
+        }
+        const response = await token.decode(req.headers.token);
+        if (response) {
+            if (response.rol == "admin") {
+                next();
+            } else {
+                res.status(401).send({
+                    message: 'NO ESTÁ PERMITIDO VISITAR ESTA RUTA, PORQUE ERES UN CLIENT'
+                });
+            }
+        } else {
+            res.status(401).send({
+                message: 'EL TOKEN NO ES VALIDO'
+            });
+        }
+    },
+}
