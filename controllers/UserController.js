@@ -142,7 +142,7 @@ export default {
     },
     list: async(req, res) => {
         try {
-            var search = req.body.search;
+            var search = req.query.search;
             let Users = await models.User.find({
                 $or:[
                     {"name": RegExp(search, "i")},
