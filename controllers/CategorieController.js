@@ -29,7 +29,7 @@ export default {
     },
     update: async(req, res) => {
         try {
-            if (req.files) {
+            if (req.files && req.files.portada) {
                 var img_path = req.files.portada.path;
                 var name = img_path.split('\\');
                 var portada_name = name[2];
