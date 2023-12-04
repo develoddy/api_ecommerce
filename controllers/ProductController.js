@@ -7,8 +7,9 @@ export default {
             if(valid_Product) {
                 res.status(200).send({
                     code: 403,
-                    message: "Eñ producto ya existe"
+                    message: "El producto ya existe"
                 });
+                return;
             }
 
             data.slug = data.title.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
@@ -42,6 +43,7 @@ export default {
                     code: 403,
                     message: "Eñ producto ya existe"
                 });
+                return;
             }
 
             data.slug = data.title.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
