@@ -3,8 +3,9 @@ export default {
         return {
             _id: product._id,
             title: product.title,
+            sku: product.sku,
             slug: product.slug,
-            imagen: 'http://localhost:3000/'+'/uploads/product/'+product.portada, // Falta completar la ruta
+            imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+product.portada, // Falta completar la ruta
             categorie: product.categorie,
             price_soles: product.price_soles,
             price_usd: product.price_usd,

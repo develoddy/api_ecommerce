@@ -1,9 +1,15 @@
 import models from '../models';
+import resources from '../resources';
+import fs from 'fs';
+import path from "path";
+
 export default {
     register: async(req, res) => {
         try {
             let data = req.body;
+
             let valid_Product = await models.Product.findOne({title: data.title});
+
             if(valid_Product) {
                 res.status(200).send({
                     code: 403,
@@ -13,14 +19,18 @@ export default {
             }
 
             data.slug = data.title.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
-            let product = await models.Product.create(data);
-
+            
             if (req.files) {
                 var img_path = req.files.imagen.path;
-                var name = img_path.split('\\');
+                console.log(img_path);
+                var name = img_path.split('/');
                 var portada_name = name[2];
-                req.body.imagen = portada_name;
+                data.portada = portada_name;
             }
+
+            console.log(data);
+
+            let product = await models.Product.create(data);
 
             res.status(200).json({
                 message: "El Producto se registró correctamente"
@@ -41,7 +51,7 @@ export default {
             if(valid_Product) {
                 res.status(200).send({
                     code: 403,
-                    message: "Eñ producto ya existe"
+                    message: "El producto ya existe"
                 });
                 return;
             }
@@ -110,6 +120,8 @@ export default {
             var img = req.params['img'];
 
             fs.stat('./uploads/product/'+img, function(err){
+                console.log("Debugg: Product getImagr");
+                console.log(err);
                 if(!err){
                     let path_img = './uploads/product/'+img;
                     res.status(200).sendFile(path.resolve(path_img));
