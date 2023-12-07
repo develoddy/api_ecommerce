@@ -3,6 +3,7 @@ import mongoose ,{ Schema } from "mongoose";
 const ProductSchema = new Schema ({
     title: {type:String, require:true, maxlength: 250},
     slug: {type:String, require:true, maxlength: 1000},
+    sku: {type:String, require:true},
     categorie: {type:Schema.ObjectId, ref: 'categorie', require:true},
     price_soles: {type:Number, require:true},
     price_usd: {type:Number, require:true},

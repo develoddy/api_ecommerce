@@ -22,13 +22,10 @@ export default {
             
             if (req.files) {
                 var img_path = req.files.imagen.path;
-                console.log(img_path);
                 var name = img_path.split('/');
                 var portada_name = name[2];
                 data.portada = portada_name;
             }
-
-            console.log(data);
 
             let product = await models.Product.create(data);
 
@@ -46,7 +43,7 @@ export default {
         try {
             let data = req.body;
 
-            let valid_Product = await models.Product.findOne({title: data.title, _id: {$ne: data_._id} });
+            let valid_Product = await models.Product.findOne({title: data.title, _id: {$ne: data._id} });
 
             if(valid_Product) {
                 res.status(200).send({
@@ -57,11 +54,12 @@ export default {
             }
 
             data.slug = data.title.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+
             if (req.files && req.files.imagen) {
                 var img_path = req.files.imagen.path;
-                var name = img_path.split('\\');
+                var name = img_path.split('/');
                 var portada_name = name[2];
-                req.body.imagen = portada_name;
+                data.portada = portada_name;
             }
 
             await models.Product.findByIdAndUpdate({_id: data._id}, data);
@@ -71,8 +69,9 @@ export default {
             });
 
         } catch (error) {
+            console.log(error);
             res.status(500).send({
-                message: "Debugg: ProducController - Ocurrio un problema en Register"
+                message: "Debugg: ProducController - Ocurrio un problema en Update"
             });
         }
     },
@@ -120,8 +119,6 @@ export default {
             var img = req.params['img'];
 
             fs.stat('./uploads/product/'+img, function(err){
-                console.log("Debugg: Product getImagr");
-                console.log(err);
                 if(!err){
                     let path_img = './uploads/product/'+img;
                     res.status(200).sendFile(path.resolve(path_img));
@@ -177,10 +174,24 @@ export default {
             });
             res.status(200).json({
                 message: "La imagen se eliminó perfectamente",
-            })
+            });
         } catch (error) {
             res.status(500).send({
                 message: "debbug: ProductController remove_imagen - OCURRIÓ UN PROBLEMA"
+            });
+            console.log(error);
+        }
+    },
+    show: async(req, res) => {
+        try {
+            var product_id = req.params.id;
+            let product = await models.Product.findById({_id: product_id}).populate("categorie");
+            res.status(200).json({
+                product: resources.Product.product_list(product)
+            })
+        } catch (error) {
+            res.status(500).send({
+                message: "debbug: ProductController show - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }

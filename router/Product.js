@@ -16,5 +16,6 @@ router.get("/list", auth.verifyAdmin, ProductController.list);
 router.delete("/delete", auth.verifyAdmin, ProductController.remove);
 
 router.get("/uploads/product/:img", ProductController.getImage);
+router.get("/show/:id", ProductController.show);
 
 export default router;
