@@ -77,19 +77,32 @@ export default {
     },
     list: async(req, res) => {
         try {
-            var search = req.query.search;
-            var categorie = req.query.categorie;
-            let products = await models.Product.find({
-                $or:[
-                    {"title": new RegExp(search, 'i')},
-                    {"categorie": categorie},
-                ],
-            }).populate('categorie')
+            var filter = [];
+            var products = null;
+            if (req.query.search) {
+                filter.push(
+                    {"title": new RegExp(req.query.search, 'i')},
+                );
+            }
+            if (req.query.categorie) {
+                filter.push(
+                    {"categorie": req.query.categorie},
+                );
+            }
+            if(filter.length > 0) {
+                products = await models.Product.find({
+                    $and: filter,
+                }).populate('categorie')
 
-            products = products.map(product => {
-                return resources.Product.product_list(product);
-            });
-
+                products = products.map(product => {
+                    return resources.Product.product_list(product);
+                });
+            } else {
+                products = await models.Product.find().populate('categorie')
+                products = products.map(product => {
+                    return resources.Product.product_list(product);
+                });
+            }
             res.status(200).json({
                 products: products
             });
@@ -102,9 +115,9 @@ export default {
     },
     remove: async(req, res) => {
         try {
-            let _id = req.params._id;
+            let _id = req.query._id;
             await models.Product.findByIdAndDelete({_id: _id});
-            resizeTo.status(200).json({
+            res.status(200).json({
                 message: "El producto se ha eliminado correctamente"
             });
         } catch (error) {
