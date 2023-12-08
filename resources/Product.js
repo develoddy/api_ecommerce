@@ -1,5 +1,5 @@
 export default {
-    product_list: (product) => {
+    product_list: (product, variedades = []) => {
         return {
             _id: product._id,
             title: product.title,
@@ -15,22 +15,11 @@ export default {
             tags: product.tags ? JSON.parse(product.tags) : [],
             type_inventario: product.type_inventario,
             state: product.state,
+            variedades: variedades,
+            galerias: product.galerias.map((galeria) => {
+                galeria.imagen = 'http://localhost:3000'+'/api/products/uploads/product/'+galeria.imagen;
+                return galeria;
+            }),
         }
     }
 }
-
-/**
-    title: {type:String, require:true, maxlength: 250},
-    slug: {type:String, require:true, maxlength: 1000},
-    categorie: {type:Schema.ObjectId, ref: 'categorie', require:true},
-    price_soles: {type:Number, require:true},
-    price_usd: {type:Number, require:true},
-    portada: {type:String, require:true},
-    galerias: [{type:Object, require:false}],
-    state: {type:Number, default:1}, // 1 es en prueba o desarrollo, 2 será publico y 3 será anulado
-    stock: {type:Number, default:0},
-    description: {type:String, require:true},
-    resumen: {type:String, require:true},
-    tags: {type:String, required:true},
-    type_inventario: {type: Number, default:1}
- */

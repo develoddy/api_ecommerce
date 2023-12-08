@@ -137,7 +137,7 @@ export default {
     register_imagen: async(req, res) => {
         try {
             var img_path = req.files.imagen.path;
-            var name = img_path.split('\\');
+            var name = img_path.split('/');
             var imagen_name = name[2];
 
             let product = await models.Product.findByIdAndUpdate({_id: req.body._id}, {
@@ -151,8 +151,8 @@ export default {
             res.status(200).json({
                 message: "La imagen se subió perfectamente",
                 imagen: {
-                    imagen: imagen_name,
-                    imagen_path: 'http://localhost:3000/'+'/uploads/product/'+imagen_name,
+                    //imagen: imagen_name,
+                    imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+imagen_name,
                     _id: req.body.__id
                 }
             })
@@ -186,8 +186,9 @@ export default {
         try {
             var product_id = req.params.id;
             let product = await models.Product.findById({_id: product_id}).populate("categorie");
+            let variedades = await models.Variedad.find({product: product_id});
             res.status(200).json({
-                product: resources.Product.product_list(product)
+                product: resources.Product.product_list(product, variedades)
             })
         } catch (error) {
             res.status(500).send({
