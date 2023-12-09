@@ -39,7 +39,7 @@ export default {
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController login - OCURRIÓ UN PROBLEMA"
+                message: "debbug: UserController update - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -62,7 +62,7 @@ export default {
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController login - OCURRIÓ UN PROBLEMA"
+                message: "debbug: UserController list - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -75,7 +75,7 @@ export default {
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController login - OCURRIÓ UN PROBLEMA"
+                message: "debbug: UserController remove - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
