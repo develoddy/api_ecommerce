@@ -13,8 +13,8 @@ export default {
                 var portada_name = name[2];
                 req.body.imagen = portada_name;
             }
-            const categorie = await models.Categorie.create(req.body);
-            res.status(200).json(categorie);
+            const slider = await models.Slider.create(req.body);
+            res.status(200).json(slider);
         } catch (error) {
             res.status(500).send({
                 message: "debbug: UserController register - OCURRIÓ UN PROBLEMA"
@@ -28,15 +28,14 @@ export default {
                 var img_path = req.files.portada.path;
                 var name = img_path.split('\\');
                 var portada_name = name[2];
-                //console.log(portada_name);
                 req.body.imagen = portada_name;
             }
-            await models.Categorie.findByIdAndUpdate({_id:req.body._id}, req.body);
-            let CategorieT = await models.Categorie.findOne({_id:req.body._id});
+            await models.Slider.findByIdAndUpdate({_id:req.body._id}, req.body);
+            let SliderT = await models.Slider.findOne({_id:req.body._id});
 
             res.status(200).json({
-                message: "LA CATEGORIA SE HA MODIFICADO CORRECTAMENTE",
-                categorie: resources.Categorie.categorie_list(CategorieT),
+                message: "EL SLIDER SE HA MODIFICADO CORRECTAMENTE",
+                slider: resources.Slider.slider_list(SliderT),
             });
         } catch (error) {
             res.status(500).send({
@@ -48,18 +47,18 @@ export default {
     list: async(req, res) => {
         try {
             var search = req.query.search;
-            let Categories = await models.Categorie.find({
+            let Sliders = await models.Slider.find({
                 $or:[
                     {"title": RegExp(search, "i")},
                 ]
             }).sort({'createdAt': -1});
 
-            Categories = Categories.map((user) => {
-                return resources.Categorie.categorie_list(user);
+            Sliders = Sliders.map((user) => {
+                return resources.Slider.slider_list(user);
             });
 
             res.status(200).json({
-                categories: Categories
+                Sliders: Sliders
             });
         } catch (error) {
             res.status(500).send({
@@ -70,9 +69,9 @@ export default {
     },
     remove: async(req, res) => {
         try {
-            await models.Categorie.findByIdAndDelete({_id: req.query._id});
+            await models.Slider.findByIdAndDelete({_id: req.query._id});
             res.status(200).json({
-                message: "LA CATEGORIA SE ELIMINÓ CORRECTAMENTE"
+                message: "EL SLIDER SE ELIMINÓ CORRECTAMENTE"
             });
         } catch (error) {
             res.status(500).send({
@@ -86,9 +85,9 @@ export default {
         try {
             var img = req.params['img'];
 
-            fs.stat('./uploads/categorie/'+img, function(err){
+            fs.stat('./uploads/slider/'+img, function(err){
                 if(!err){
-                    let path_img = './uploads/categorie/'+img;
+                    let path_img = './uploads/slider/'+img;
                     res.status(200).sendFile(path.resolve(path_img));
                 }else{
                     let path_img = './uploads/default.jpg';
