@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from "path";
 
 export default {
-   
     register: async(req, res) => {
         try {
             if (req.files) {
