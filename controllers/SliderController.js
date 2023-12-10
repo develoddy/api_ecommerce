@@ -16,7 +16,7 @@ export default {
             res.status(200).json(slider);
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController register - OCURRIÓ UN PROBLEMA"
+                message: "debbug: SliderController register - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -38,7 +38,7 @@ export default {
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController update - OCURRIÓ UN PROBLEMA"
+                message: "debbug: SliderController update - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -57,11 +57,11 @@ export default {
             });
 
             res.status(200).json({
-                Sliders: Sliders
+                sliders: Sliders
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController list - OCURRIÓ UN PROBLEMA"
+                message: "debbug: SliderController list - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -74,7 +74,7 @@ export default {
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController remove - OCURRIÓ UN PROBLEMA"
+                message: "debbug: SliderController remove - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -95,7 +95,7 @@ export default {
             })
         } catch (error) {
             res.status(500).send({
-                message: "debbug: UserController getImage - OCURRIÓ UN PROBLEMA"
+                message: "debbug: SliderController getImage - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
