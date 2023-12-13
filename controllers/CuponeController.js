@@ -7,7 +7,7 @@ export default {
     register: async(req, res) => {
         try {
             let data = req.body;
-            let exists_cupone = await models.Cupone.findOne({code: data_code});
+            let exists_cupone = await models.Cupone.findOne({code: data.code});
             if (exists_cupone) {
                 res.status(200).json({
                     message: 403,
@@ -43,7 +43,6 @@ export default {
             }
 
             let cupone = await models.Cupone.findByIdAndUpdate({_id: data._id},data);
-
             let cupone_T = await models.Cupone.findById({_id: data._id});
 
             res.status(200).json({
@@ -99,5 +98,22 @@ export default {
             console.log(error);
         }
     },
-    
+    config:async(req, res) => {
+        try {
+            
+            let Products = await models.Product.find({state:2});
+            let Categories = await models.Categorie.find({state:1});
+
+            res.status(200).json({
+                message: 200,
+                products: Products,
+                categories: Categories
+            });
+        } catch (error) {
+            res.status(500).send({
+                message: "debbug: CuponeController list - OCURRIÓ UN PROBLEMA"
+            });
+            console.log(error);
+        }
+    }
 }
