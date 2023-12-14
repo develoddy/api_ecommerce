@@ -33,7 +33,7 @@ export default {
     update: async(req, res) => {
         try {
             let data = req.body;
-            let exists_cupone = await models.Cupone.findOne({code: data_code, _id: {$ne: data._id} });
+            let exists_cupone = await models.Cupone.findOne({code: data.code, _id: {$ne: data._id} });
             if (exists_cupone) {
                 res.status(200).json({
                     message: 403,
@@ -47,7 +47,7 @@ export default {
 
             res.status(200).json({
                 message: 200,
-                message_text: "El cupon se registró correctamente",
+                message_text: "El cupon se actualizó correctamente",
                 cupone: cupone_T,
             });
         } catch (error) {
@@ -94,6 +94,23 @@ export default {
         } catch (error) {
             res.status(500).send({
                 message: "debbug: CuponeController list - OCURRIÓ UN PROBLEMA"
+            });
+            console.log(error);
+        }
+    },
+    show:async(req, res) => {
+        try {
+            var cupone_id = req.query.cupone_id;
+
+            let cupone = await models.Cupone.findOne({_id: cupone_id});
+
+            res.status(200).json({
+                message: 200,
+                cupon: cupone,
+            });
+        } catch (error) {
+            res.status(500).send({
+                message: "debbug: CuponeController show - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
