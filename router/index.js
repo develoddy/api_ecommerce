@@ -12,6 +12,6 @@ router.use("/categories", Categorie);
 router.use("/products", Product);
 router.use("/sliders", Slider);
 router.use("/cupones", Cupone);
-router.use("/discounts", Cupone);
+router.use("/discounts", Discount);
 
 export default router;

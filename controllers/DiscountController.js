@@ -14,17 +14,17 @@ export default {
 
             if (data.type_segment == 1) {
                 filter_a.push({
-                    "products": {$elemMath: {_id: {$in: data.product_s}}}
+                    "products": {$elemMatch: {_id: {$in: data.product_s}}}
                 });
                 filter_b.push({
-                    "products": {$elemMath: {_id: {$in: data.product_s}}}
+                    "products": {$elemMatch: {_id: {$in: data.product_s}}}
                 });
             } else {
                 filter_a.push({
-                    "categories": {$elemMath: {_id: {$in: data.categorie_s}}}
+                    "categories": {$elemMatch: {_id: {$in: data.categorie_s}}}
                 });
                 filter_b.push({
-                    "categories": {$elemMath: {_id: {$in: data.categorie_s}}}
+                    "categories": {$elemMatch: {_id: {$in: data.categorie_s}}}
                 });
             }
 
@@ -40,10 +40,10 @@ export default {
 
             let exists_end_date = await models.Discount.find({$and: filter_b});
 
-            if (exists_start_date || exists_end_date) {
+            if (exists_start_date.length > 0 || exists_end_date.length > 0 ) {
                 res.status(200).json({
                     message: 403,
-                    message_text: "El descuento no se puede programar eliminar algunas opciones"
+                    message_text: "El descuento no se puede programar eliminar algunas opciones..11"
                 });
                 return;
             }
@@ -72,17 +72,17 @@ export default {
 
             if (data.type_segment == 1) {
                 filter_a.push({
-                    "products": {$elemMath: {_id: {$in: data.product_s}}}
+                    "products": {$elemMatch: {_id: {$in: data.product_s}}}
                 });
                 filter_b.push({
-                    "products": {$elemMath: {_id: {$in: data.product_s}}}
+                    "products": {$elemMatch: {_id: {$in: data.product_s}}}
                 });
             } else {
                 filter_a.push({
-                    "categories": {$elemMath: {_id: {$in: data.categorie_s}}}
+                    "categories": {$elemMatch: {_id: {$in: data.categorie_s}}}
                 });
                 filter_b.push({
-                    "categories": {$elemMath: {_id: {$in: data.categorie_s}}}
+                    "categories": {$elemMatch: {_id: {$in: data.categorie_s}}}
                 });
             }
 
@@ -91,7 +91,7 @@ export default {
                 start_date_num: {$gte: data.start_date_num, $lte: data.end_date_num}
             });
 
-            filter_a.push({
+            filter_b.push({
                 _id: {$ne: data._id},
                 end_date_num: {$gte: data.start_date_num, $lte: data.end_date_num}
             });
@@ -100,10 +100,10 @@ export default {
 
             let exists_end_date = await models.Discount.find({$and: filter_b});
 
-            if (exists_start_date || exists_end_date) {
+            if (exists_start_date.length > 0 || exists_end_date.length > 0 ) {
                 res.status(200).json({
                     message: 403,
-                    message_text: "El descuento no se puede programar eliminar algunas opciones"
+                    message_text: "El descuento no se puede programar eliminar algunas opcioness..22"
                 });
                 return;
             }
