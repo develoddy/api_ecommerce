@@ -29,10 +29,12 @@ export default {
             }
 
             filter_a.push({
+                type_campaign:data.type_campaign,
                 start_date_num: {$gte: data.start_date_num, $lte: data.end_date_num}
             });
 
-            filter_a.push({
+            filter_b.push({
+                type_campaign:data.type_campaign,
                 end_date_num: {$gte: data.start_date_num, $lte: data.end_date_num}
             });
 
@@ -87,11 +89,13 @@ export default {
             }
 
             filter_a.push({
+                type_campaign:data.type_campaign,
                 _id: {$ne: data._id},
                 start_date_num: {$gte: data.start_date_num, $lte: data.end_date_num}
             });
 
             filter_b.push({
+                type_campaign:data.type_campaign,
                 _id: {$ne: data._id},
                 end_date_num: {$gte: data.start_date_num, $lte: data.end_date_num}
             });

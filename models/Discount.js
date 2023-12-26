@@ -1,6 +1,7 @@
 import moongose, {Schema} from "mongoose";
 
 const DiscountSchema = new Schema({
+    type_campaign:{type: Number, required:true, default: 1}, // 1 es campaña normal y 2 es venta flash
     type_discount:{type: Number, required:true, default: 1}, // Por porcentaje 1 o por moneda 2
     discount:{type: Number,  required:true}, 
     start_date: {type:Date, required:true},
