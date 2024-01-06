@@ -1,5 +1,17 @@
 export default {
     product_list: (product, variedades = []) => {
+        var IMAGEN_TWO = "xx";
+        var GALERIAS = product.galerias.map((galeria) => {
+            galeria.imagen = 'http://localhost:3000'+'/api/products/uploads/product/'+galeria.imagen;
+            return galeria;
+        });
+        //var VAL = Math.floor(Math.random() * 3); // 0,1,2
+        // IMAGEN_TWO = GALERIAS[VAL].imagen;
+        // NOTA: Hay que poner en aleatorio la imagen
+        GALERIAS.forEach(element => {
+            //console.log(element.imagen);
+            IMAGEN_TWO = element.imagen;
+        });
         return {
             _id: product._id,
             title: product.title,
@@ -16,10 +28,8 @@ export default {
             type_inventario: product.type_inventario,
             state: product.state,
             variedades: variedades,
-            galerias: product.galerias.map((galeria) => {
-                galeria.imagen = 'http://localhost:3000'+'/api/products/uploads/product/'+galeria.imagen;
-                return galeria;
-            }),
+            imagen_two: IMAGEN_TWO,
+            galerias: GALERIAS,
         }
     }
 }
