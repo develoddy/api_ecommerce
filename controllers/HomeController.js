@@ -71,5 +71,30 @@ export default {
             });
             console.log(error);
         }
-    }
+    },
+
+    show_landing_product:async(req, res) => {
+        try {
+            let SLUG = req.params.slug;
+            let Product = await models.Product.findOne({slug: SLUG, state: 2});
+            
+            let VARIEDADES = await models.Variedad.find({product: Product._id});
+
+            let RelateProducts = await models.Product.find({categorie: Product.categorie, state: 2});
+            var ObjectRelateProducts = [];
+            for (const Product of RelateProducts) {
+                let variedades = await models.Variedad.find({product: Product._id});
+                ObjectRelateProducts.push(resources.Product.product_list(Product,variedades));
+            }
+            res.status(200).json({
+                product: resources.Product.product_list(Product, VARIEDADES),
+                related_products: ObjectRelateProducts,
+            })
+        } catch (error) {
+            res.status(500).send({
+                message: "Ocurrio un problema"
+            });
+            console.log(error);
+        }
+    },
 }
