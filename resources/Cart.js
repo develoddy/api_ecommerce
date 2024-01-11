@@ -1,6 +1,7 @@
 export default {
     cart_list: (cart) => {
         return {
+            _id: cart._id,
             user: cart.user,
             product: {
                 _id: cart.product._id,

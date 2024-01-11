@@ -6,6 +6,7 @@ import Slider from "./Slider";
 import Cupone from "./Cupone";
 import Discount from "./Discount";
 import Home from "./Home";
+import Cart from "./Cart";
 
 const router = routerx();
 router.use("/users", User);
@@ -15,5 +16,6 @@ router.use("/sliders", Slider);
 router.use("/cupones", Cupone);
 router.use("/discounts", Discount);
 router.use("/home", Home);
+router.use("/cart", Cart);
 
 export default router;

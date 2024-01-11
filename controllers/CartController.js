@@ -18,14 +18,15 @@ export default {
             });
 
             CARTS = CARTS.map((cart) => {
-                return resources.Cart.cart_list(cart),
-            })
+                return resources.Cart.cart_list(cart)
+            });
+
             res.status(200).json({
                 carts: CARTS,
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: CartController OCURRIÓ UN PROBLEMA"
+                message: "debbug: CartController list OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -89,13 +90,21 @@ export default {
             }
 
             let CART = await models.Cart.create(data);
-            rest.status(200).json({
-                cart: CART,
+
+            let NEW_CART = await models.Cart.findById({_id: CART._id}).populate("variedad").populate({
+                path: "product",
+                populate: {
+                    path: "categorie"
+                }
+            });
+
+            res.status(200).json({
+                cart: resources.Cart.cart_list(NEW_CART),
                 message_text: "El carrito se registro con exito!",
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: CartController OCURRIÓ UN PROBLEMA"
+                message: "debbug: CartController register:  OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
@@ -103,8 +112,6 @@ export default {
     update: async(req, res) => {
         try {
             let data = req.body;
-            
-            
             // SEGUNDO VAMOS A VALIDAR SI EL STOCK ESTÁ DISPONIBLE
             if(data.variedad) {
                 let valid_variedad = await models.Variedad.findOne({
@@ -132,8 +139,14 @@ export default {
             }
 
             let CART = await models.Cart.findByIdAndUpdate({_id: data._id}, data);
-            rest.status(200).json({
-                cart: CART,
+            let NEW_CART = await models.Cart.findById({_id: CART._id}).populate("variedad").populate({
+                path: "product",
+                populate: {
+                    path: "categorie"
+                }
+            });
+            res.status(200).json({
+                cart: resources.Cart.cart_list(NEW_CART),
                 message_text: "El cartito se actualizó con exito!",
             });
         } catch (error) {
@@ -145,14 +158,14 @@ export default {
     },
     delete: async(req, res) => {
         try {
-            let _id = req.params._id;
+            let _id = req.params.id;
             let CART = await models.Cart.findByIdAndDelete({_id: _id});
-            rest.status(200).json({
+            res.status(200).json({
                 message_text: "El cartito se eliminó correctamente!",
             });
         } catch (error) {
             res.status(500).send({
-                message: "debbug: CartController OCURRIÓ UN PROBLEMA"
+                message: "debbug: CartController delete OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }
