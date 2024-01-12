@@ -1,4 +1,4 @@
-import moongose, {Schema} from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const CuponeSchema = new Schema({
     code:{type: String, maxlength:50, required:true},
@@ -14,5 +14,5 @@ const CuponeSchema = new Schema({
     timestamps: true
 });
 
-const Cupone = moongose.model("cupones", CuponeSchema);
+const Cupone = mongoose.model("cupones", CuponeSchema);
 export default Cupone;

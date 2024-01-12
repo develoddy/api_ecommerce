@@ -6,6 +6,10 @@ import Slider from './Slider';
 import Cupone from './Cupone';
 import Discount from './Discount';
 import Cart from './Cart';
+import AdressClient from './AddressClient';
+import Sale from './Sale';
+import SaleAddress from './SaleAddress';
+import SaleDetail from './SaleDetail';
 
 export default {
     User,
@@ -16,4 +20,8 @@ export default {
     Cupone,
     Discount,
     Cart,
+    AdressClient,
+    Sale,
+    SaleAddress,
+    SaleDetail,
 }

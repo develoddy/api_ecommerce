@@ -1,4 +1,4 @@
-import moongose, {Schema} from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const DiscountSchema = new Schema({
     type_campaign:{type: Number, required:true, default: 1}, // 1 es campaña normal y 2 es venta flash
@@ -16,5 +16,5 @@ const DiscountSchema = new Schema({
     timestamps: true
 });
 
-const Dicount = moongose.model("discounts", DiscountSchema);
+const Dicount = mongoose.model("discounts", DiscountSchema);
 export default Dicount;

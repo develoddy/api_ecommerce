@@ -1,8 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 
-const CartSchema = new Schema({
-
-    user: {type: Schema.ObjectId, ref: 'user', required:true},
+const SaleDetailSchema = new Schema({
+    sale: {type: Schema.ObjectId, ref: 'sale', required:true},
     product: {type: Schema.ObjectId, ref: 'product', required:true},
     type_discount: {type: Number, required:false, default: 1}, // Por porcentaje 1 o por moneda 2
     discount: {type: Number, default: 0},
@@ -13,9 +12,10 @@ const CartSchema = new Schema({
     price_unitario: {type:String, required:true},
     subtotal: {type:String, required:true},
     total: {type:String, required:true},
+
 },{
-    timestamps: true
+    timestamps: true,
 });
 
-const Cart = mongoose.model("cart", CartSchema);
-export default Cart;
+const SaleDetail = mongoose.model("sale_detail", SaleDetailSchema);
+export default SaleDetail;

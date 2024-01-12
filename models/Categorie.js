@@ -1,4 +1,4 @@
-import moongose, {Schema} from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const CategorieSchema = new Schema({
     title:{type: String, maxlength:250, required:true},
@@ -8,5 +8,5 @@ const CategorieSchema = new Schema({
     timestamps: true
 });
 
-const Categorie = moongose.model("categorie", CategorieSchema);
+const Categorie = mongoose.model("categorie", CategorieSchema);
 export default Categorie;

@@ -3,7 +3,6 @@ import models from "../models";
 //import token from "../services/token";
 import resources from "../resources";
 
-
 export default {
     list: async(req, res) => {
         try {
@@ -170,4 +169,90 @@ export default {
             console.log(error);
         }
     },
+    apllyCupon: async(req, res) => {
+        try {
+            let data = req.body;
+            // LA PRIMERA VALIDACION TIENE QUE VER CON LA EXISTENCIA DEL CUPON
+            let CUPON = await models.Cupone.findOne({
+                code: data.code,
+            });
+
+            if (!CUPON) {
+                res.status(200).json({
+                    message:403,
+                    message_text: "El cupon ingresado no existe, digite otro nuevamente"
+                });
+                return;
+            }
+            // TIENE CON EL USO DEL CUPON -- VA ESTAR EN ESPERA...
+
+            // LA PARTE OPERATIVA
+            let carts = await models.Cart.find({user: data.user_id}).populate("product");
+            let products = [];
+            let categories = [];
+
+            CUPON.products.forEach((product) => {
+                products.push(product._id);
+            });
+            //
+            CUPON.categories.forEach((categorie) => {
+                categories.push(categorie._id);
+            });
+
+            for (const cart of carts) {
+                if (products.length > 0) {
+                    if (products.includes(cart.product._id+"")) {
+                        let subtotal = 0;
+                        let total = 0;
+                        if (CUPON.type_discount == 1) { // PORT PORCENTAJE
+                            //subtotal = cart.price_unitario - cart.price_unitario*(CUPON.discount*0.01);
+                            //let precioRedondeado = parseFloat(precio.toFixed(2));
+                            subtotal = parseFloat((cart.price_unitario - cart.price_unitario*(CUPON.discount*0.01)).toFixed(2));
+                        } else { // PORT MONEDA
+                            subtotal = cart.price_unitario - CUPON.discount;
+                        }
+
+                        total = subtotal * cart.cantidad;
+                        await models.Cart.findByIdAndUpdate({_id: cart._id}, {
+                            subtotal: subtotal,
+                            total: total,
+                            type_discount: CUPON.type_discount,
+                            discount: CUPON.discount,
+                            code_cupon: CUPON.code,
+                        });
+                    }
+                }
+
+                if (categories.length > 0) {
+                    if (categories.includes(cart.product.categorie+"")) {
+                        let subTotal = 0;
+                        let total = 0;
+                        if (CUPON.type_discount == 1) { // PORT PORCENTAJE
+                            subTotal = cart.price_unitario - cart.price_unitario*(CUPON.discount*0.01);
+                        } else { // PORT MONEDA
+                            subTotal = cart.price_unitario - CUPON.discount;
+                        }
+
+                        total = subTotal * cart.cantidad;
+                        await models.Cart.findByIdAndUpdate({_id: cart._id}, {
+                            subTotal: subTotal,
+                            total: total,
+                            type_discount: CUPON.type_discount,
+                            discount: CUPON.discount,
+                            code_cupon: CUPON.code,
+                        });
+                    }
+                }
+            }
+            res.status(200).json({
+                message: 200,
+                message_text: "El cupon es aplicado correctamente",
+            });
+        } catch (error) {
+            res.status(500).send({
+                message: "debbug: CartController apllyCupon OCURRIÓ UN PROBLEMA"
+            });
+            console.log(error);
+        }
+    }
 }
