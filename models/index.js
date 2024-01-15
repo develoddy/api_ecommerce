@@ -10,6 +10,7 @@ import AdressClient from './AddressClient';
 import Sale from './Sale';
 import SaleAddress from './SaleAddress';
 import SaleDetail from './SaleDetail';
+import Review from './Review';
 
 export default {
     User,
@@ -24,4 +25,5 @@ export default {
     Sale,
     SaleAddress,
     SaleDetail,
+    Review,
 }

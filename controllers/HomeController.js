@@ -1,5 +1,6 @@
 import models from "../models";
 import resources from "../resources";
+import bcrypt from 'bcryptjs';
 
 export default {
     list: async(req, res) => {
@@ -90,6 +91,102 @@ export default {
                 product: resources.Product.product_list(Product, VARIEDADES),
                 related_products: ObjectRelateProducts,
             })
+        } catch (error) {
+            res.status(500).send({
+                message: "Ocurrio un problema"
+            });
+            console.log(error);
+        }
+    },
+
+    profile_client:async(req, res) => {
+        try {
+            let user_id = req.body.user_id;
+            let Orders = await models.Sale.find({user: user_id});
+
+            let sale_orders = [];
+            for (const order of Orders) {
+                let detail_orders = await models.SaleDetail.find({sale: order._id}).populate({
+                    path: "product",
+                    populate: {
+                        path: "categorie"
+                    }
+                }).populate("variedad");
+                let sale_address = await models.SaleAddress.find({sale: order._id});
+                let collection_detail_orders = [];
+                for (const detail_order of detail_orders) {
+                    let reviewS = await models.Review.findOne({sale_detail: detail_order._id});
+                    collection_detail_orders.push({
+                        _id: detail_order._id,
+                        product: {
+                            _id: detail_order.product._id,
+                            title: detail_order.product.title,
+                            sku: detail_order.product.sku,
+                            slug: detail_order.product.slug,
+                            imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+detail_order.product.portada,//*
+                            categorie: detail_order.product.categorie,
+                            price_soles: detail_order.product.price_soles,
+                            price_usd: detail_order.product.price_usd,
+                        },
+                        type_discount: detail_order.type_discount,
+                        discount: detail_order.discount,
+                        cantidad: detail_order.cantidad,
+                        variedad: detail_order.variedad,
+                        code_cupon: detail_order.code_cupon,
+                        code_discount: detail_order.code_discount,
+                        price_unitario: detail_order.price_unitario,
+                        subtotal: detail_order.subtotal,
+                        total: detail_order.total,
+                        review: reviewS,
+                    });
+                }
+                // end for
+                sale_orders.push({
+                    sale: order,
+                    sale_details: collection_detail_orders,
+                    sale_address: sale_address,
+                });
+            }
+            // end for
+
+            let AdressClient = await models.AdressClient.find({user: user_id}).sort({'createdAt': -1});
+
+            res.status(200).json({
+                sale_orders: sale_orders,
+                address_client: AdressClient,
+            })
+        } catch (error) {
+            res.status(500).send({
+                message: "Ocurrio un problema"
+            });
+            console.log(error);
+        }
+    },
+    update_client:async(req, res) => {
+        try {
+            if (req.files) {
+                var img_path = req.files.avatar.path;
+                var name = img_path.split('\\');
+                var avatar_name = name[2];
+                console.log(avatar_name);
+            }
+            
+            if (req.body.password) {
+                req.body.password = await bcrypt.hash(req.body.password, 10);
+            }
+
+            await models.User.findByIdAndUpdate({_id:req.body._id}, req.body);
+            let User = await models.User.findOne({_id:req.body._id});
+
+            res.status(200).json({
+                message: "Se ha guardo su informacion correctamente.",
+                user: {
+                    name: User.name,
+                    surname: User.surname,
+                    email: User.email,
+                    _id: User._id,
+                }
+            });
         } catch (error) {
             res.status(500).send({
                 message: "Ocurrio un problema"
