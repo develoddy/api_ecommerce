@@ -1,5 +1,5 @@
 export default {
-    product_list: (product, variedades = []) => {
+    product_list: (product, variedades = [], avg_review = 0, count_review = 0, CampaingDiscount = null) => {
         var IMAGEN_TWO = "xx";
         var GALERIAS = product.galerias.map((galeria) => {
             galeria.imagen = 'http://localhost:3000'+'/api/products/uploads/product/'+galeria.imagen;
@@ -30,6 +30,9 @@ export default {
             variedades: variedades,
             imagen_two: IMAGEN_TWO,
             galerias: GALERIAS,
+            avg_review:avg_review,
+            count_review:count_review,
+            campaing_discount: CampaingDiscount,
         }
     }
 }

@@ -18,19 +18,71 @@ export default {
                 return resources.Categorie.categorie_list(categorie);
             });
 
+            let CampaingDiscount = await models.Discount.findOne({
+                type_campaign: 1,
+                start_date_num: {$lte: TIME_NOW}, // <=
+                end_date_num: {$gte: TIME_NOW},  // >=
+            });
+            
             let BestProducts = await models.Product.find({state:2}).sort({"createdAt": -1});
 
             var ObjectBestProducts = [];
             for (const Product of BestProducts) {
                 let variedades = await models.Variedad.find({product: Product._id});
-                ObjectBestProducts.push(resources.Product.product_list(Product,variedades));
+                let REVIEWS = await models.Review.find({product: Product._id});
+                let AVG_REVIEW = REVIEWS.length > 0 ? Math.ceil(REVIEWS.reduce((sum, item) => sum + item.cantidad,0)/REVIEWS.length) : 0;
+                let COUNT_REVIEW = REVIEWS.length;
+                let DISCOUNT_EXIST = null;
+                if (CampaingDiscount) {
+                    if (CampaingDiscount.type_segment == 1) { // Por producto
+                        let products_a = [];
+                        CampaingDiscount.products.forEach(item => {
+                            products_a.push(item._id);
+                        });
+                        if (products_a.includes(Product._id+"")) {
+                            DISCOUNT_EXIST = CampaingDiscount;
+                        }
+                    } else { // Por categoria
+                        let categories_a = [];
+                        CampaingDiscount.categories.forEach(item => {
+                            categories_a.push(item._id);
+                        });
+                        if (categories_a.includes(Product.categorie+"")) {
+                            DISCOUNT_EXIST = CampaingDiscount;
+                        }
+                    }
+                }
+                ObjectBestProducts.push(resources.Product.product_list(Product,variedades, AVG_REVIEW, COUNT_REVIEW, DISCOUNT_EXIST));
             }
 
             let OurProducts = await models.Product.find({state:2}).sort({"createdAt": 1});
             var ObjectOurProducts = [];
             for (const Product of OurProducts) {
                 let variedades = await models.Variedad.find({product: Product._id});
-                ObjectOurProducts.push(resources.Product.product_list(Product,variedades));
+                let REVIEWS = await models.Review.find({product: Product._id});
+                let AVG_REVIEW = REVIEWS.length > 0 ? Math.ceil(REVIEWS.reduce((sum, item) => sum + item.cantidad,0)/REVIEWS.length) : 0;
+                let COUNT_REVIEW = REVIEWS.length;
+                let DISCOUNT_EXIST = null;
+                if (CampaingDiscount) {
+                    if (CampaingDiscount.type_segment == 1) { // Por producto
+                        let products_a = [];
+                        CampaingDiscount.products.forEach(item => {
+                            products_a.push(item._id);
+                        });
+                        if (products_a.includes(Product._id+"")) {
+                            DISCOUNT_EXIST = CampaingDiscount;
+                        }
+                    } else { // Por categoria
+                        let categories_a = [];
+                        CampaingDiscount.categories.forEach(item => {
+                            categories_a.push(item._id);
+                        });
+                        if (categories_a.includes(Product.categorie+"")) {
+                            DISCOUNT_EXIST = CampaingDiscount;
+                        }
+                    }
+                }
+                ObjectOurProducts.push(resources.Product.product_list(Product,variedades, AVG_REVIEW, COUNT_REVIEW, DISCOUNT_EXIST));
             }
             //OurProducts = OurProducts.map(async(product) => {
             //    let variedades = await models.Variedad.find({product: product._id});
@@ -52,7 +104,6 @@ export default {
                     ProductList.push(resources.Product.product_list(ObjectT,variedades));
                 }
             } else {
-                console.log("No hay FlashSale");
                 FlashSale = null;
                 ProductList = [];
             }
@@ -77,6 +128,8 @@ export default {
     show_landing_product:async(req, res) => {
         try {
             let SLUG = req.params.slug;
+            let DISCOUNT_ID = req.query._id;
+            
             let Product = await models.Product.findOne({slug: SLUG, state: 2});
             
             let VARIEDADES = await models.Variedad.find({product: Product._id});
@@ -87,9 +140,15 @@ export default {
                 let variedades = await models.Variedad.find({product: Product._id});
                 ObjectRelateProducts.push(resources.Product.product_list(Product,variedades));
             }
+
+            let SALE_FLASH = null;
+            if (DISCOUNT_ID) {
+                SALE_FLASH = await models.Discount.findById({_id: DISCOUNT_ID});
+            }
             res.status(200).json({
                 product: resources.Product.product_list(Product, VARIEDADES),
                 related_products: ObjectRelateProducts,
+                SALE_FLASH: SALE_FLASH,
             })
         } catch (error) {
             res.status(500).send({
