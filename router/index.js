@@ -5,6 +5,11 @@ import Product from "./Product";
 import Slider from "./Slider";
 import Cupone from "./Cupone";
 import Discount from "./Discount";
+import Home from "./Home";
+import Cart from "./Cart";
+import AdressClient from "./AdressClient";
+import Sale from "./Sale";
+import Review from "./Review";
 
 const router = routerx();
 router.use("/users", User);
@@ -13,5 +18,11 @@ router.use("/products", Product);
 router.use("/sliders", Slider);
 router.use("/cupones", Cupone);
 router.use("/discounts", Discount);
+router.use("/home", Home);
+router.use("/cart", Cart);
+router.use("/address_client", AdressClient);
+router.use("/sale", Sale);
+router.use("/review", Review);
+
 
 export default router;

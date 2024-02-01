@@ -1,4 +1,4 @@
-import moongose, {Schema} from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const SliderSchema = new Schema({
     title:{type: String, maxlength:250, required:true},
@@ -9,5 +9,5 @@ const SliderSchema = new Schema({
     timestamps: true
 });
 
-const Slider = moongose.model("sliders", SliderSchema);
+const Slider = mongoose.model("sliders", SliderSchema);
 export default Slider;
