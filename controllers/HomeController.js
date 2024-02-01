@@ -124,7 +124,6 @@ export default {
             console.log(error);
         }
     },
-
     show_landing_product:async(req, res) => {
         try {
             let SLUG = req.params.slug;
