@@ -34,7 +34,6 @@ export default {
         }
     },
     list: async(req, res) => {
-        console.log("list checkout");
         try {
             let AdressClient = await models.AdressClient.find({user: req.query.user_id}).sort({'createdAt': -1});
 

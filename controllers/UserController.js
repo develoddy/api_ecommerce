@@ -61,12 +61,12 @@ export default {
                     });
                 } else {
                     res.status(500).send({
-                        message: "EL USUARIO NO EXISTE"
+                        message: "El correo electrónico o la contraseña que has introducido es incorrecta."
                     });
                 }
             } else {
                 res.status(500).send({
-                    message: "EL USUARIO NO EXISTE"
+                    message: "El correo electrónico o la contraseña que has introducido es incorrecta."
                 });
             }
         } catch (error) {

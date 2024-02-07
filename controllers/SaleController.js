@@ -24,6 +24,16 @@ async function send_email(sale_id) {
         let OrderDetail = await models.SaleDetail.find({sale: Order._id}).populate("product").populate("variedad");
         let AddressSale = await models.SaleAddress.findOne({sale: Order._id});
 
+        
+        if (OrderDetail) {
+            console.log("debugg: Send_Email");
+            OrderDetail.forEach(order => {
+                order.product.portada = 'http://localhost:3000'+'/api/products/uploads/product/'+order.product.portada;
+                console.log(order.product);
+                //imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+product.portada, 
+            });
+        }
+
         var transporter = nodemailer.createTransport(smtpTransport({
             service: 'gmail',
             host: 'smtp.gmail.com',
@@ -34,8 +44,13 @@ async function send_email(sale_id) {
         }));
 
         readHTMLFile(process.cwd() + '/mails/email_sale.html', (err, html)=>{
+
+           
+
                                 
             let rest_html = ejs.render(html, {order: Order, address_sale: AddressSale, order_detail: OrderDetail});
+
+            
     
             var template = handlebars.compile(rest_html);
             var htmlToSend = template({op:true});
@@ -105,7 +120,7 @@ export default {
             await send_email(SALE._id);
 
             res.status(200).json({
-                message: "LA orden se genero correctamente",
+                message: "La orden se genero correctamente!",
             })
         } catch (error) {
             res.status(500).send({

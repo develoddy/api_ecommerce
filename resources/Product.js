@@ -1,6 +1,6 @@
 export default {
     product_list: (product, variedades = [], avg_review = 0, count_review = 0, CampaingDiscount = null) => {
-        var IMAGEN_TWO = "xx";
+        var IMAGEN_TWO = "";
         var GALERIAS = product.galerias.map((galeria) => {
             galeria.imagen = 'http://localhost:3000'+'/api/products/uploads/product/'+galeria.imagen;
             return galeria;
