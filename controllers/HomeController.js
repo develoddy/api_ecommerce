@@ -141,7 +141,11 @@ export default {
             var ObjectRelateProducts = [];
             for (const Product of RelateProducts) {
                 let variedades = await models.Variedad.find({product: Product._id});
-                ObjectRelateProducts.push(resources.Product.product_list(Product,variedades));
+
+                let REVIEWS = await models.Review.find({product: Product._id});
+                let AVG_REVIEW = REVIEWS.length > 0 ? Math.ceil(REVIEWS.reduce((sum, item) => sum + item.cantidad,0)/REVIEWS.length) : 0;
+                let COUNT_REVIEW = REVIEWS.length;
+                ObjectRelateProducts.push(resources.Product.product_list(Product,variedades,AVG_REVIEW, COUNT_REVIEW));
             }
 
             let SALE_FLASH = null;
