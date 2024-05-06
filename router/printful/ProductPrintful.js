@@ -12,5 +12,6 @@ const router = routerx();
 
 
 router.get("/list",productController.list);
+router.get("/store-list",productController.storeListProducts);
 
 export default router;
