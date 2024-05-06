@@ -11,6 +11,7 @@ import AdressClient from "./AdressClient";
 import Sale from "./Sale";
 import Review from "./Review";
 
+
 const router = routerx();
 router.use("/users", User);
 router.use("/categories", Categorie);
@@ -23,6 +24,5 @@ router.use("/cart", Cart);
 router.use("/address_client", AdressClient);
 router.use("/sale", Sale);
 router.use("/review", Review);
-
 
 export default router;
