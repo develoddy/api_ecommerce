@@ -35,11 +35,7 @@ export default {
       // Llamar a la API (Service) de Printful para obtener la lista de productos
       products = await printfulService.getPrintfulStoreProducts();
 
-      // Mapear los productos y llamar al servicio para obtener más detalles
-        products = await Promise.all( products.map( async ( product ) => {
-        const productDetails = await printfulService.getPrintfulStoreProduct( product.id );
-        return resources.ProductStorePrintful.product_list( productDetails );
-      }));
+      products = resources.ProductStorePrintful.product_list(products);
 
       res.status( 200 ).json({
         products: products
@@ -48,6 +44,25 @@ export default {
     } catch ( error ) {
       res.status( 500 ).json({
         error: 'Error al obtener la lista de productos de templates de Printful'
+      });
+    }
+  },
+
+  storeShowProduct: async ( req, res ) => {
+    try {
+      var product = null;
+      var productId = req.params.id;
+
+      // Llamar a la API (Service) de Printful para obtener la lista de productos
+      product = await printfulService.getPrintfulStoreProduct(productId);
+
+      res.status( 200 ).json({
+        product: product
+    });
+
+    } catch ( error ) {
+      res.status( 500 ).json({
+        error: 'Debugg: storeShowProduct -- Error al obtener la lista de productos de templates de Printful'
       });
     }
   }

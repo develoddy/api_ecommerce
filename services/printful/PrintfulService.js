@@ -20,7 +20,7 @@ const getPrintfulStoreProducts = async () => {
                 'Authorization': `Bearer ${PRINTFUL_API_TOKEN}`
             }
         });
-        return response.data.result;
+        return response.data;
     } catch (error) {
         console.error('DEBUG getPrintfulProductsTemplates: Error al obtener la lista de productos de Printful:', error);
         throw new Error('Error al obtener la lista de productos de Printful');
@@ -29,15 +29,14 @@ const getPrintfulStoreProducts = async () => {
 
 const getPrintfulStoreProduct = async ( productId ) => {
     try {
-        console.log("DEbug me llega un id" + productId);
 
-        const response = await axios.get(`https://api.printful.com/sync/products/${productId}`, {
+        const response = await axios.get(`https://api.printful.com/store/products/${productId}`, {
             headers: {
                 'Authorization': `Bearer ${PRINTFUL_API_TOKEN}`
             }
         });
 
-        return response.data.result;
+        return response.data;
 
     } catch (error) {
         console.error('DEBUG getProductPrintful: Error al obtener la lista de productos de Printful:', error);
