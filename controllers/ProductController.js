@@ -2,8 +2,72 @@ import models from '../models';
 import resources from '../resources';
 import fs from 'fs';
 import path from "path";
+import printfulService from '../services/printful/PrintfulService';
+
+
+async function syncFromPrintful(printfulData) {
+    try {
+        let data = null;
+
+        data = {
+            ...printfulData
+        };
+        for (const product of data.result) {
+
+
+            let valid_Product = await models.Product.findOne({title: product.name});
+            console.log("valid_Product "+ valid_Product);
+            if(valid_Product) {
+                console.log("El producto de printful ya existe");
+                return;
+            }
+
+            data.slug = product.name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+            if (product.thumbnail_url) {
+                var img_path = product.thumbnail_url;
+                var name = img_path.split('/');
+                var portada_name = name[5];
+                data.portada = portada_name;
+            }
+            data.title = product.name;
+            data.tags = '["Negro","Luces Led"]';
+
+            // Verificar si tags está presente en data
+            if (!data.tags) {
+                return res.status(400).json({ error: "El campo 'tags' es requerido" });
+            }
+
+            let success = models.Product.create(data); // Return object
+        }
+        return true;
+    } catch (error) {
+        console.error("Error al sincronizar datos de Printful:", error);
+    }
+}
 
 export default {
+
+    // storeListProducts: async ( req, res ) => {
+    //     try {
+    //       var products = null;
+    
+    //       // Llamar a la API (Service) de Printful para obtener la lista de productos
+    //       products = await printfulService.getPrintfulStoreProducts();
+    
+    //       products = resources.ProductStorePrintful.product_list(products);
+    
+    //       res.status( 200 ).json({
+    //         products: products
+    //     });
+    
+    //     } catch ( error ) {
+    //       res.status( 500 ).json({
+    //         error: 'Error al obtener la lista de productos de templates de Printful'
+    //       });
+    //     }
+    // },
+
+
     register: async(req, res) => {
         try {
             let data = req.body;
@@ -79,6 +143,8 @@ export default {
         try {
             var filter = [];
             var products = null;
+            var productsPrinful = null;
+
             if (req.query.search) {
                 filter.push(
                     {"title": new RegExp(req.query.search, 'i')},
@@ -98,6 +164,11 @@ export default {
                     return resources.Product.product_list(product);
                 });
             } else {
+
+                // Printfull
+                productsPrinful = await printfulService.getPrintfulStoreProducts();
+                let success = await syncFromPrintful(productsPrinful);
+
                 products = await models.Product.find().populate('categorie')
                 products = products.map(product => {
                     return resources.Product.product_list(product);

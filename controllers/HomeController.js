@@ -3,6 +3,12 @@ import resources from "../resources";
 import bcrypt from 'bcryptjs';
 
 export default {
+
+    // Printful
+    // listProductsPrintful: async(req, res) = {
+
+    // },
+
     list: async(req, res) => {
         try {
 

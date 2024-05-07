@@ -44,13 +44,8 @@ async function send_email(sale_id) {
         }));
 
         readHTMLFile(process.cwd() + '/mails/email_sale.html', (err, html)=>{
-
-           
-
-                                
+                 
             let rest_html = ejs.render(html, {order: Order, address_sale: AddressSale, order_detail: OrderDetail});
-
-            
     
             var template = handlebars.compile(rest_html);
             var htmlToSend = template({op:true});
