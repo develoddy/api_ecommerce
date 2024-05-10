@@ -27,7 +27,7 @@ const getPrintfulStoreProducts = async () => {
     }   
 };
 
-const getPrintfulStoreProduct = async ( productId ) => {
+const getPrintfulProductDetail = async ( productId ) => {
     try {
 
         const response = await axios.get(`https://api.printful.com/store/products/${productId}`, {
@@ -48,5 +48,5 @@ const getPrintfulStoreProduct = async ( productId ) => {
 export default {
     getPrintfulProducts,
     getPrintfulStoreProducts,
-    getPrintfulStoreProduct,
+    getPrintfulProductDetail,
 };

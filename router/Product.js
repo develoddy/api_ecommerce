@@ -27,4 +27,10 @@ router.delete("/delete-variedad/:id", auth.verifyAdmin, variedadController.delet
 // Printfull
 //router.get("/printful-list",productController.storeListProducts);
 
+
+// Simulador de webhook
+
+router.post("/webhook/printful", productController.webhook);
+
+
 export default router;
