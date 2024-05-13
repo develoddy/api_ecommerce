@@ -3,8 +3,14 @@ import resources from "../resources";
 import fs from 'fs';
 import path from "path";
 
+/**
+ * 
+ * ------------------------------------------------------------------
+ * -           METODOS PRINCIPALES DEL CONTROLADOR                  -
+ * ------------------------------------------------------------------
+ *
+ */
 export default {
-   
     register: async(req, res) => {
         try {
             if (req.files) {
@@ -28,7 +34,6 @@ export default {
                 var img_path = req.files.portada.path;
                 var name = img_path.split('\\');
                 var portada_name = name[2];
-                //console.log(portada_name);
                 req.body.imagen = portada_name;
             }
             await models.Categorie.findByIdAndUpdate({_id:req.body._id}, req.body);
@@ -81,7 +86,6 @@ export default {
             console.log(error);
         }
     },
-
     getImage: async(req, res) => {
         try {
             var img = req.params['img'];

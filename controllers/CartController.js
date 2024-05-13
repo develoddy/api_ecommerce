@@ -62,6 +62,8 @@ export default {
                 }
             }
             
+            console.log("Debugg: ------- register data ---------------");
+            console.log(data);
             // SEGUNDO VAMOS A VALIDAR SI EL STOCK ESTÁ DISPONIBLE
             if(data.variedad) {
                 let valid_variedad = await models.Variedad.findOne({
