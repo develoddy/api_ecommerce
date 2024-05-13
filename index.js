@@ -3,9 +3,13 @@ import cors from "cors";
 import path from "path";
 import mongoose from "mongoose";
 import router from "./router";
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 // PRINTFUL
 import "./suppliers/printful/SyncCategories";
 import "./suppliers/printful/SyncProdcuts";
+
 
 // CONNECTION TO THE DATABASE
 mongoose.Promise = global.Promise;

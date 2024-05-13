@@ -28,9 +28,9 @@ async function send_email(sale_id) {
         if (OrderDetail) {
             console.log("debugg: Send_Email");
             OrderDetail.forEach(order => {
-                order.product.portada = 'http://localhost:3000'+'/api/products/uploads/product/'+order.product.portada;
+                order.product.portada = process.env.URL_BACKEND+'/api/products/uploads/product/'+order.product.portada;
                 console.log(order.product);
-                //imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+product.portada, 
+                //imagen: process.env.URL_BACKEND+'/api/products/uploads/product/'+product.portada, 
             });
         }
 

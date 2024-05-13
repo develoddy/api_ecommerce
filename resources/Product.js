@@ -2,7 +2,7 @@ export default {
     product_list: (product, variedades = [], avg_review = 0, count_review = 0, CampaingDiscount = null) => {
         var IMAGEN_TWO = "";
         var GALERIAS = product.galerias.map((galeria) => {
-            galeria.imagen = 'http://localhost:3000'+'/api/products/uploads/product/'+galeria.imagen;
+            galeria.imagen = process.env.URL_BACKEND+'/api/products/uploads/product/'+galeria.imagen;
             return galeria;
         });
         //var VAL = Math.floor(Math.random() * 3); // 0,1,2
@@ -17,7 +17,7 @@ export default {
             title: product.title,
             sku: product.sku,
             slug: product.slug,
-            imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+product.portada, // Falta completar la ruta
+            imagen: process.env.URL_BACKEND+'/api/products/uploads/product/'+product.portada, // Falta completar la ruta
             categorie: product.categorie,
             price_soles: product.price_soles,
             price_usd: product.price_usd,

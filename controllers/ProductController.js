@@ -177,7 +177,7 @@ export default {
                 message: "La imagen se subió perfectamente",
                 imagen: {
                     //imagen: imagen_name,
-                    imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+imagen_name,
+                    imagen: process.env.URL_BACKEND+'/api/products/uploads/product/'+imagen_name,
                     _id: req.body.__id
                 }
             })

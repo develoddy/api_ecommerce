@@ -8,7 +8,7 @@ export default {
                 title: cart.product.title,
                 sku: cart.product.sku,
                 slug: cart.product.slug,
-                imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+cart.product.portada, // Falta completar la ruta
+                imagen: process.env.URL_BACKEND+'/api/products/uploads/product/'+cart.product.portada, // Falta completar la ruta
                 categorie: cart.product.categorie,
                 price_soles: cart.product.price_soles,
                 price_usd: cart.product.price_usd,

@@ -197,7 +197,7 @@ export default {
                             title: detail_order.product.title,
                             sku: detail_order.product.sku,
                             slug: detail_order.product.slug,
-                            imagen: 'http://localhost:3000'+'/api/products/uploads/product/'+detail_order.product.portada,//*
+                            imagen: process.env.URL_BACKEND+'/api/products/uploads/product/'+detail_order.product.portada,//*
                             categorie: detail_order.product.categorie,
                             price_soles: detail_order.product.price_soles,
                             price_usd: detail_order.product.price_usd,
