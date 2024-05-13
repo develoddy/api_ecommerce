@@ -1,4 +1,4 @@
-import moongose, {Schema} from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const UserSchema = new Schema({
     rol:{type: String, maxlength:30, required:true},
@@ -14,5 +14,5 @@ const UserSchema = new Schema({
     timestamps: true
 });
 
-const User = moongose.model("user", UserSchema);
+const User = mongoose.model("user", UserSchema);
 export default User;

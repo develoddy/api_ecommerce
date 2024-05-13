@@ -1,13 +1,16 @@
-/*import models from "../models";
-import bcrypt from 'bcryptjs';
-import token from "../services/token";
-import resources from "../resources";*/
-
 import models from "../models";
 import resources from "../resources";
+import fs from 'fs';
+import path from "path";
 
+/**
+ * 
+ * ------------------------------------------------------------------
+ * -           METODOS PRINCIPALES DEL CONTROLADOR                  -
+ * ------------------------------------------------------------------
+ *
+ */
 export default {
-   
     register: async(req, res) => {
         try {
             if (req.files) {
@@ -27,11 +30,10 @@ export default {
     },
     update: async(req, res) => {
         try {
-            if (req.files) {
+            if (req.files && req.files.portada) {
                 var img_path = req.files.portada.path;
                 var name = img_path.split('\\');
                 var portada_name = name[2];
-                //console.log(portada_name);
                 req.body.imagen = portada_name;
             }
             await models.Categorie.findByIdAndUpdate({_id:req.body._id}, req.body);
@@ -62,7 +64,7 @@ export default {
             });
 
             res.status(200).json({
-                Categories: Categories
+                categories: Categories
             });
         } catch (error) {
             res.status(500).send({
@@ -80,6 +82,26 @@ export default {
         } catch (error) {
             res.status(500).send({
                 message: "debbug: UserController login - OCURRIÓ UN PROBLEMA"
+            });
+            console.log(error);
+        }
+    },
+    getImage: async(req, res) => {
+        try {
+            var img = req.params['img'];
+
+            fs.stat('./uploads/categorie/'+img, function(err){
+                if(!err){
+                    let path_img = './uploads/categorie/'+img;
+                    res.status(200).sendFile(path.resolve(path_img));
+                }else{
+                    let path_img = './uploads/default.jpg';
+                    res.status(200).sendFile(path.resolve(path_img));
+                }
+            })
+        } catch (error) {
+            res.status(500).send({
+                message: "debbug: UserController getImage - OCURRIÓ UN PROBLEMA"
             });
             console.log(error);
         }

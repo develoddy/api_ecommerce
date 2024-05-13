@@ -49,6 +49,7 @@ export default {
                     const USER_FRONTED = {
                         token: tokenT,
                         user: {
+                            _id: user._id,
                             name: user.name,
                             email: user.email,
                             surname: user.surname,
@@ -60,12 +61,12 @@ export default {
                     });
                 } else {
                     res.status(500).send({
-                        message: "EL USUARIO NO EXISTE"
+                        message: "El correo electrónico o la contraseña que has introducido es incorrecta."
                     });
                 }
             } else {
                 res.status(500).send({
-                    message: "EL USUARIO NO EXISTE"
+                    message: "El correo electrónico o la contraseña que has introducido es incorrecta."
                 });
             }
         } catch (error) {
