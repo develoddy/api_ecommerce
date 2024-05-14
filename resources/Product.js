@@ -5,11 +5,7 @@ export default {
             galeria.imagen = process.env.URL_BACKEND+'/api/products/uploads/product/'+galeria.imagen;
             return galeria;
         });
-        //var VAL = Math.floor(Math.random() * 3); // 0,1,2
-        // IMAGEN_TWO = GALERIAS[VAL].imagen;
-        // NOTA: Hay que poner en aleatorio la imagen
         GALERIAS.forEach(element => {
-            //console.log(element.imagen);
             IMAGEN_TWO = element.imagen;
         });
         return {
