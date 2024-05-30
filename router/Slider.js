@@ -10,7 +10,6 @@ router.post("/register", [auth.verifyAdmin, path], sliderController.register);
 router.put("/update", [auth.verifyAdmin, path], sliderController.update);
 router.get("/list", auth.verifyAdmin, sliderController.list);
 router.delete("/delete", auth.verifyAdmin, sliderController.remove);
-
 router.get("/uploads/slider/:img", sliderController.getImage);
 
 export default router;

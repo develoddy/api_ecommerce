@@ -24,10 +24,4 @@ router.post("/register-variedad", [auth.verifyAdmin, path], variedadController.r
 router.put("/update-variedad", [auth.verifyAdmin, path], variedadController.update);
 router.delete("/delete-variedad/:id", auth.verifyAdmin, variedadController.delete);
 
-// Printfull
-//router.get("/printful-list",productController.storeListProducts);
-// Simulador de webhook
-//router.post("/webhook/printful", productController.webhook);
-
-
 export default router;

@@ -114,7 +114,6 @@ export default {
             console.log(error);
         }
     },
-
     update: async(req, res) => {
         try {
             if (req.files) {

@@ -4,14 +4,8 @@ import bcrypt from 'bcryptjs';
 
 export default {
 
-    // Printful
-    // listProductsPrintful: async(req, res) = {
-
-    // },
-
     list: async(req, res) => {
         try {
-
             var TIME_NOW = req.query.TIME_NOW;
 
             let Sliders = await models.Slider.find({state:1});

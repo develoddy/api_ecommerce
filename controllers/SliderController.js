@@ -79,7 +79,6 @@ export default {
             console.log(error);
         }
     },
-
     getImage: async(req, res) => {
         try {
             var img = req.params['img'];
